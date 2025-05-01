@@ -1,0 +1,50 @@
+.layout-container{
+    height:100vh;
+    display:grid;
+    grid-template-columns: 300px auto;
+    grid-template-areas:"nav content";
+}
+
+nav{
+    grid-area: nav;
+    border-right:1px solid rgba(0,0,0,0.2);
+}
+
+.logo-group{
+    display:flex;
+    justify-content:space-evenly;
+    align-items:center;
+    padding: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.logo-group .logo{
+    background-image: url('../../assets/ALLWALKS_logo_FullColor.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 80px;
+    height: 120px;
+}
+
+.logo-group .description{
+    font-size:16px;
+}
+
+.content-container{
+    grid-area: content;
+}
+
+.nav-button{
+    display: block;
+    width: 100%;
+    border: 1px solid transparent;
+    background-color: transparent;
+    text-align: center;
+    padding: 20px;
+    transition: background-color 0.3s ease;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.nav-button:hover{
+    background-color: rgba(0,0,0,0.1);
+}
