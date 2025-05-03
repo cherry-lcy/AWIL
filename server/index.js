@@ -19,7 +19,7 @@ const secret = crypto.randomBytes(32).toString('hex');
 
 app.use((req, res, next)=>{
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     if (req.method === 'OPTIONS') {
         return res.sendStatus(200);
@@ -36,21 +36,23 @@ app.post("/v1/authentication", (req, res)=>{
         const token = jwt.sign({id, password}, secret, {expiresIn: "4hr"})
         return res.send({
             status: 200,
-            message:{
+            data:{
                 id: id,
                 token: token
-            }
+            },
+            timestamp: new Date().toISOString()
         })
     }
     else{
         return res.status(403).send({
             status: 403,
-            message: "Invalid id or password"
+            data: "Invalid id or password",
+            timestamp: new Date().toISOString()
         })
     }
 })
 
-// get theme list api
+// get subtheme list api
 app.get("/v1/subthemes", async (req, res)=>{
     try{
         const verify = verifyUser(req, secret);
@@ -58,23 +60,29 @@ app.get("/v1/subthemes", async (req, res)=>{
         if(verify.status === 200){
             const subtheme = await getSubthemeList();
             return res.send({
-                status:200,
-                message: subtheme
+                status: 200,
+                data: subtheme.data,
+                timestamp: subtheme.timestamp
             })
         }
         else{
-            return res.status(verify.status).send(verify);
+            return res.status(verify.status).send({
+                status: verify.status,
+                data: verify.message,
+                timestamp: new Date().toISOString()
+            });
         }
     }
     catch(e){
         return res.status(403).send({
             status: 403,
-            message: "Invalid Credential"
+            data: e.message,
+            timestamp: new Date().toISOString()
         })
     }
 })
 
-// get category api
+// get theme api
 app.get("/v1/themes", async (req, res)=>{
     try{
         const verify = verifyUser(req, secret);
@@ -83,17 +91,23 @@ app.get("/v1/themes", async (req, res)=>{
             const theme = await getThemeList();
             return res.send({
                 status:200,
-                message: theme
+                data: theme.data,
+                timestamp: theme.timestamp
             })
         }
         else{
-            return res.status(verify.status).send(verify);
+            return res.status(verify.status).send({
+                status: verify.status,
+                data: verify.message,
+                timestamp: new Date().toISOString()
+            });
         }
     }
     catch(e){
         return res.status(403).send({
             status: 403,
-            message: "Invalid Credential"
+            data: e.message,
+            timestamp: new Date().toISOString()
         })
     }
 })
@@ -107,17 +121,23 @@ app.get("/v1/categories", async (req, res)=>{
             const categories = await getCategoryList();
             return res.send({
                 status:200,
-                message: categories
+                data: categories.data,
+                timestamp: categories.timestamp
             })
         }
         else{
-            return res.status(verify.status).send(verify);
+            return res.status(verify.status).send({
+                status: verify.status,
+                data: verify.message,
+                timestamp: new Date().toISOString()
+            });
         }
     }
     catch(e){
         return res.status(403).send({
             status: 403,
-            message: "Invalid Credential"
+            data: e.message,
+            timestamp: new Date().toISOString()
         })
     }
 })
@@ -128,20 +148,26 @@ app.get("/v1/all-data", async (req, res)=>{
         const verify = verifyUser(req, secret);
         
         if(verify.status === 200){
-            const allData = await getAll();
+            const queryList = await getAll();
             return res.send({
-                status:200,
-                message: allData
+                status: 200,
+                data: queryList.data,
+                timestamp: queryList.timestamp
             })
         }
         else{
-            return res.status(verify.status).send(verify);
+            return res.status(verify.status).send({
+                status: verify.status,
+                data: verify.message,
+                timestamp: new Date().toISOString()
+            });
         }
     }
     catch(e){
         return res.status(403).send({
             status: 403,
-            message: "Invalid Credential"
+            data: e.message,
+            timestamp: new Date().toISOString()
         })
     }
 })
@@ -152,23 +178,27 @@ app.get("/v1/query", async (req, res)=>{
         const verify = verifyUser(req, secret);
         
         if(verify.status === 200){
-            const theme = res.query.theme;
-            const subtheme = res.query.subtheme;
-            const category = res.query.category;
+            const {theme, subtheme, category} = req.query;
             const queryList = await getRequiredData({theme, subtheme, category});
             return res.send({
-                status:200,
-                message: queryList
+                status: 200,
+                data: queryList.data,
+                timestamp: queryList.timestamp
             })
         }
         else{
-            return res.status(verify.status).send(verify);
+            return res.status(verify.status).send({
+                status: verify.status,
+                data: verify.message,
+                timestamp: new Date().toISOString()
+            });
         }
     }
     catch(e){
         return res.status(403).send({
             status: 403,
-            message: "Invalid Credential"
+            data: e.message,
+            timestamp: new Date().toISOString()
         })
     }
 })
@@ -179,51 +209,77 @@ app.patch("/v1/query", async (req, res)=>{
         const verify = verifyUser(req, secret);
         
         if(verify.status === 200){
-            const theme = res.query.theme;
-            const subtheme = res.query.subtheme;
-            const category = res.query.category;
-            const queryList = await insertData({theme, subtheme, category});
+            const {name, theme, subtheme, category} = req.body;
+            const queryList = await insertData({name, theme, subtheme, category});
             return res.send({
                 status:200,
-                message: queryList
+                data: {
+                    insertedId: queryList.insertedID,
+                    affectedRows: queryList.affectedRows,
+                    values:queryList.data
+                },
+                timestamp: queryList.timestamp
             })
         }
         else{
-            return res.status(verify.status).send(verify);
+            return res.status(verify.status).send({
+                status: verify.status,
+                data: verify.message,
+                timestamp: new Date().toISOString()
+            });
         }
     }
     catch(e){
         return res.status(403).send({
             status: 403,
-            message: "Invalid Credential"
+            data: e.message,
+            timestamp: new Date().toISOString()
         })
     }
 })
 
 // update data api
-app.put("/v1/query", async (res, req)=>{
+app.put("/v1/query", async (req, res)=>{
     try{
         const verify = verifyUser(req, secret);
         
         if(verify.status === 200){
-            const newTheme = res.query.theme;
-            const newSubtheme = res.query.subtheme;
-            const newCategory = res.query.category;
-            const query = res.body.data;
-            const queryList = await updateData({newTheme, newSubtheme, newCategory, ...query});
+            const { name, theme, subtheme, category, newTheme, newSubtheme, newCategory } = req.body;
+            
+            const queryList = await updateData({
+                name, 
+                theme, 
+                subtheme, 
+                category,
+                newTheme, 
+                newSubtheme, 
+                newCategory
+            });
+
             return res.send({
-                status:200,
-                message: queryList
-            })
+                status: 200,
+                data: {
+                    affectedRows: queryList.affectedRows,
+                    changedRows: queryList.changedRows,
+                    oldValues: { name, theme, subtheme, category },
+                    newValues: { newTheme, newSubtheme, newCategory }
+                },
+                timestamp: queryList.timestamp
+            });
         }
         else{
-            return res.status(verify.status).send(verify);
+            return res.status(verify.status).send({
+                status: verify.status,
+                data: verify.message,
+                timestamp: new Date().toISOString()
+            });
         }
     }
     catch(e){
         return res.status(403).send({
             status: 403,
-            message: "Invalid Credential"
+            data: e.message,
+            timestamp: new Date().toISOString()
         })
     }
 })
@@ -233,23 +289,30 @@ app.delete("/v1/query", async (req, res)=>{
         const verify = verifyUser(req, secret);
         
         if(verify.status === 200){
-            const theme = res.query.theme;
-            const subtheme = res.query.subtheme;
-            const category = res.query.category;
-            const queryList = await deleteData({theme, subtheme, category});
+            const {name, theme, subtheme, category} = req.body;
+            const queryList = await deleteData({name, theme, subtheme, category});
             return res.send({
                 status:200,
-                message: queryList
+                data: {
+                    affectedRows: queryList.affectedRows,
+                    deletedValues: queryList.deletedData
+                },
+                timestamp: queryList.timestamp
             })
         }
         else{
-            return res.status(verify.status).send(verify);
+            return res.status(verify.status).send({
+                status: verify.status,
+                data: verify.message,
+                timestamp: new Date().toISOString()
+            });
         }
     }
     catch(e){
         return res.status(403).send({
             status: 403,
-            message: "Invalid Credential"
+            data: e.message,
+            timestamp: new Date().toISOString()
         })
     }
 })
