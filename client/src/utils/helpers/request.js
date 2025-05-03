@@ -3,7 +3,7 @@ import {getToken, clearToken} from './token';
 import router from '../../router';
 
 const request = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: "http://localhost:5000/v1",
     timeout: 5000,
 })
 

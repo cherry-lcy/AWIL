@@ -32,6 +32,7 @@ app.use(express.json());
 // login authentication API
 app.post("/v1/authentication", (req, res)=>{
     const {id, password} = req.body;
+    console.log("authentication...");
     if(id === "apple" && password === "apple"){
         const token = jwt.sign({id, password}, secret, {expiresIn: "4hr"})
         return res.send({
@@ -55,6 +56,7 @@ app.post("/v1/authentication", (req, res)=>{
 // get subtheme list api
 app.get("/v1/subthemes", async (req, res)=>{
     try{
+        console.log("get subthemes");
         const verify = verifyUser(req, secret);
         
         if(verify.status === 200){
@@ -86,6 +88,8 @@ app.get("/v1/subthemes", async (req, res)=>{
 app.get("/v1/themes", async (req, res)=>{
     try{
         const verify = verifyUser(req, secret);
+
+        console.log("get themes");
         
         if(verify.status === 200){
             const theme = await getThemeList();
@@ -116,6 +120,8 @@ app.get("/v1/themes", async (req, res)=>{
 app.get("/v1/categories", async (req, res)=>{
     try{
         const verify = verifyUser(req, secret);
+
+        console.log("get categories");
         
         if(verify.status === 200){
             const categories = await getCategoryList();
@@ -146,6 +152,8 @@ app.get("/v1/categories", async (req, res)=>{
 app.get("/v1/all-data", async (req, res)=>{
     try{
         const verify = verifyUser(req, secret);
+
+        console.log("get all data");
         
         if(verify.status === 200){
             const queryList = await getAll();
@@ -176,6 +184,8 @@ app.get("/v1/all-data", async (req, res)=>{
 app.get("/v1/query", async (req, res)=>{
     try{
         const verify = verifyUser(req, secret);
+
+        console.log("get required data");
         
         if(verify.status === 200){
             const {theme, subtheme, category} = req.query;
@@ -207,6 +217,8 @@ app.get("/v1/query", async (req, res)=>{
 app.patch("/v1/query", async (req, res)=>{
     try{
         const verify = verifyUser(req, secret);
+
+        console.log("insert data");
         
         if(verify.status === 200){
             const {name, theme, subtheme, category} = req.body;
@@ -242,6 +254,8 @@ app.patch("/v1/query", async (req, res)=>{
 app.put("/v1/query", async (req, res)=>{
     try{
         const verify = verifyUser(req, secret);
+
+        console.log("update data");
         
         if(verify.status === 200){
             const { name, theme, subtheme, category, newTheme, newSubtheme, newCategory } = req.body;
@@ -284,9 +298,12 @@ app.put("/v1/query", async (req, res)=>{
     }
 })
 
+// delete data api
 app.delete("/v1/query", async (req, res)=>{
     try{
         const verify = verifyUser(req, secret);
+
+        console.log("delete data")
         
         if(verify.status === 200){
             const {name, theme, subtheme, category} = req.body;

@@ -31,7 +31,7 @@ const userReducer = userStore.reducer;
 
 const fetchLogin = (loginForm)=>{
     return async (dispatch)=>{
-        const res = await request.post('/v1/authentication', loginForm);
+        const res = await request.post('/authentication', loginForm);
 
         if(res.status === 200){
             dispatch(setUser(res.data))

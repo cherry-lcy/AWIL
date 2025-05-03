@@ -39,10 +39,17 @@
     color:white;
 }
 
-#filter-button{
+.filter-form .button-grp{
     position:absolute;
     right:20px;
     bottom:20px;
+    display:flex;
+    width:30%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-form .button-grp button{
     display:block;
     padding:2px 20px;
     text-align:center;
@@ -53,7 +60,7 @@
     transition: background-color 0.5s;
 }
 
-#filter-button:hover{
+.filter-form .button-grp button:hover{
     background-color:royalblue;
 }
 
@@ -63,4 +70,36 @@
 
 .display-form label{
     margin: 0 20px;
+}
+
+#result-table{
+    border-collapse:collapse;
+    width:100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#result-table thead, tbody{
+    border:1px solid rgb(209,213,219);
+}
+
+#result-table thead{
+    background-color:rgb(226,232,240);
+    text-align:left;
+    color: rgb(41,43,56);
+}
+
+#result-table th{
+    padding: 5px 10px;
+}
+
+#result-table td{
+    padding: 3px 10px;
+}
+
+#result-table tbody tr:nth-child(odd){
+    background-color:white;
+}
+
+#result-table tbody tr:nth-child(even){
+    background-color: rgb(241,245,249);
 }

@@ -151,7 +151,7 @@ async function deleteData(userData){
 
 async function getThemeList(){
     try{
-        const [rows] = await pool.query(`SELECT DISTINCT theme FROM tool_set`);
+        const [rows] = await pool.query(`SELECT DISTINCT theme FROM tool_set ORDER BY theme`);
         return {
             success: true,
             operation: 'read',
@@ -175,7 +175,7 @@ async function getThemeList(){
 
 async function getSubthemeList(){
     try{
-        const [rows] = await pool.query(`SELECT DISTINCT subtheme FROM tool_set`);
+        const [rows] = await pool.query(`SELECT DISTINCT subtheme FROM tool_set ORDER BY subtheme`);
         return {
             success: true,
             operation: 'read',
@@ -199,7 +199,7 @@ async function getSubthemeList(){
 
 async function getCategoryList(){
     try{
-        const [rows] = await pool.query(`SELECT DISTINCT category FROM tool_set`);
+        const [rows] = await pool.query(`SELECT DISTINCT category FROM tool_set ORDER BY category`);
         return {
             success: true,
             operation: 'read',
