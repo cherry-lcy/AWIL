@@ -34,7 +34,7 @@ const fetchLogin = (loginForm)=>{
         const res = await request.post('/v1/authentication', loginForm);
 
         if(res.status === 200){
-            dispatch(setUser(res.message))
+            dispatch(setUser(res.data))
             return { success: true };
         }
         else{
