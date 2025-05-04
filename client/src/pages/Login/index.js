@@ -27,7 +27,7 @@ const Login = ()=>{
         const result = await dispatch(fetchLogin(formData));
 
         if(result?.success){
-            navigate('/home');
+            navigate('/home/view');
         }
         else{
             alert(result?.message || "Login failed");

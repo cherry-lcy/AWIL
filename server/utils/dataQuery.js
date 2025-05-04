@@ -2,7 +2,7 @@ const {pool} = require('./db');
 
 async function getAll(){
     try{
-        const [rows] = await pool.query("SELECT * FROM tool_set");
+        const [rows] = await pool.query("SELECT * FROM tool_set ORDER BY name");
         return {
             success: true,
             operation: 'read',
@@ -26,7 +26,7 @@ async function getAll(){
 
 async function getRequiredData(userData){
     try{
-        const [rows] = await pool.query(`SELECT * from tool_set WHERE theme = ? AND subtheme = ? AND category = ?`, [userData.theme, userData.subtheme, userData.category]);
+        const [rows] = await pool.query(`SELECT * from tool_set WHERE theme = ? AND subtheme = ? AND category = ? ORDER BY name`, [userData.theme, userData.subtheme, userData.category]);
         return {
             success: true,
             operation: 'read',
@@ -82,7 +82,7 @@ async function insertData(userData){
 
 async function updateData(userData){
     try{
-        const [result] = pool.query(`UPDATE tool_set SET theme = ?, subtheme = ?, category = ? WHERE name = ? AND theme = ? AND subtheme = category AND ? = ?`, 
+        const [result] = await pool.query(`UPDATE tool_set SET theme = ?, subtheme = ?, category = ? WHERE name = ? AND theme = ? AND subtheme = ? AND category = ?`, 
             [userData.newTheme, userData.newSubtheme, userData.newCategory, userData.name, userData.theme, userData.subtheme, userData.category]);
             
         return { 
@@ -106,7 +106,7 @@ async function updateData(userData){
         };
     }
     catch(err){
-        console.error("Error in insertData: ", err);
+        console.error("Error in updateData: ", err);
         return {
             success: false,
             operation: 'update',

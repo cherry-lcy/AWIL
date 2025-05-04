@@ -254,8 +254,6 @@ app.patch("/v1/query", async (req, res)=>{
 app.put("/v1/query", async (req, res)=>{
     try{
         const verify = verifyUser(req, secret);
-
-        console.log("update data");
         
         if(verify.status === 200){
             const { name, theme, subtheme, category, newTheme, newSubtheme, newCategory } = req.body;

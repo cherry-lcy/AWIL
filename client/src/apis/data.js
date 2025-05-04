@@ -1,16 +1,54 @@
 import {request} from '../utils';
 
-export function getAllDataAPI(){
+function getAllDataAPI(){
     return request({
         url:'/all-data',
         method:'GET'
     })
 }
 
-export function getRequiredDataAPI(params){
+function getRequiredDataAPI(params){
     return request({
         url:'/query',
         method:'GET',
         params
     })
 }
+
+function insertDataAPI(params){
+    return request({
+        url:'/query',
+        method:'PATCH',
+        params
+    })
+}
+
+function updateDataAPI(data){
+    console.log(data);
+    return request({
+        url:'/query',
+        method:'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(data)
+    }).catch(error => {
+        console.error('Update API error:', error);
+        throw error;
+    });
+}
+
+function deleteDataAPI(params){
+    console.log({
+        url:'/query',
+        method:'DELETE',
+        ...params
+    });
+    return request({
+        url:'/query',
+        method:'DELETE',
+        ...params
+    })
+}
+
+export {getAllDataAPI, getRequiredDataAPI, insertDataAPI, updateDataAPI, deleteDataAPI}
