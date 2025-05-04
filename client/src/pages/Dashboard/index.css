@@ -1,0 +1,10 @@
+.dashboard-container{
+    width: 100%;
+    padding: 20px 50px;
+}
+
+.dashboard-container h2{
+    width: 100%;
+    padding-bottom:10px;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+}

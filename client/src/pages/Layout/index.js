@@ -5,7 +5,6 @@ const Layout = ()=>{
     const navigate = useNavigate();
 
     const onClick = (e)=>{
-        console.log(e.target.name);
         navigate(`/home/${e.target.name}`);
     }
 
