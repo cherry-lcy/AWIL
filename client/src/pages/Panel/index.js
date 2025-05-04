@@ -16,8 +16,21 @@ const Panel = ()=>{
     const [displaySubtheme, setDisplaySubtheme] = useState(true);
     const [displayCategory, setDisplayCategory] = useState(true);
     const [displayData, setDisplayData] = useState([]);
+    const [displayInsert, setDisplayInsert] = useState(false);
     const [loading, setLoading] = useState(true);
     const [count, setCount] = useState(0);
+
+    const handleInsert = ()=>{
+        setDisplayInsert(true);
+    }
+
+    const handleInsertSubmit = ()=>{
+
+    }
+
+    const handleCancelInsert = ()=>{
+        setDisplayInsert(false);
+    }
 
     const [editID, setEditID] = useState(null);
     const [editData, setEditData] = useState({
@@ -200,8 +213,21 @@ const Panel = ()=>{
         </form>
         <div className="result-container">
             <div id="result-description">{count} result are found: </div>
-            <button id="insert-button">Insert</button>
+            <button id="insert-button" onClick={handleInsert}>Insert</button>
         </div>
+        {displayInsert && <div className="insert-form">
+            <div className="insert-head">Insert</div>
+            <div className="insert-option">
+                <label>Name: <input type="text" name="name"></input></label>
+                <label>Theme: <input type="text" name="theme"></input></label>
+                <label>Subtheme: <input type="text" name="subtheme"></input></label>
+                <label>Category: <input type="text" name="category"></input></label>
+            </div>
+            <div className="button-grp">
+                <button className="confirm-button" onClick={handleInsertSubmit}>Confirm</button>
+                <button className="cancel-button" onClick={handleCancelInsert}>Cancel</button> 
+            </div>
+        </div>}
         <table id="result-table">
             <thead>
                 <tr>
@@ -251,8 +277,8 @@ const Panel = ()=>{
                     <td>
                         <div className="table-button-grp">
                             {editID === item.id ? <>
-                                <button id="confirm-button" value={item.name} onClick={()=>handleEditSubmit(item)}>Confirm</button>
-                                <button id="cancel-button" value={item.name} onClick={handleCancelEdit}>Cancel</button> 
+                                <button className="confirm-button" value={item.name} onClick={()=>handleEditSubmit(item)}>Confirm</button>
+                                <button className="cancel-button" value={item.name} onClick={handleCancelEdit}>Cancel</button> 
                             </> : <>
                                 <button id="edit-button" value={item.name} onClick={()=>handleEdit(item)}>Edit</button>
                                 <button id="delete-button" value={item.name} onClick={()=>handleDelete(item)}>Delete</button>

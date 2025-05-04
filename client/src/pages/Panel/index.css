@@ -5,7 +5,7 @@
     box-sizing:border-box;
 }
 
-.filter-form{
+.filter-form, .insert-form{
     border:1px solid rgba(0,0,0,0.2);
     border-radius: 10px;
     padding:0;
@@ -26,8 +26,7 @@
     padding-bottom: 50px;
 }
 
-.filter-head{
-    background: linear-gradient(to right, rgb(6, 182, 212), rgb(59, 130, 246));
+.filter-head, .insert-head{
     height:30px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -37,6 +36,10 @@
     align-items: center;
     font-weight:bolder;
     color:white;
+}
+
+.filter-head{
+    background: linear-gradient(to right, rgb(6, 182, 212), rgb(59, 130, 246));
 }
 
 .filter-form .button-grp{
@@ -88,10 +91,39 @@
     background-color: darkgreen;
 }
 
+.insert-head{
+    background: linear-gradient(to right, rgb(49,213,190), rgb(238,238,142));
+}
+
+.insert-option{
+    display:flex;
+    width:100%;
+    padding:20px 30px;
+    padding-bottom: 60px;
+    justify-content:space-between;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.insert-option input{
+    width:100px;
+}
+
+.insert-form .button-grp{
+    position:absolute;
+    right:20px;
+    bottom:20px;
+    width:200px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 #result-table{
     border-collapse:collapse;
     width:100%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top:20px;
 }
 
 #result-table thead, tbody{
@@ -120,28 +152,28 @@
     background-color: rgb(241,245,249);
 }
 
-.table-button-grp button, .result-container button{
+.table-button-grp button, .result-container button, .button-grp button{
     padding:2px 15px;
     border:1px solid transparent;
     border-radius: 3px;
     transition: background-color 0.5s;
 }
 
-.table-button-grp #edit-button, #confirm-button{
+.table-button-grp #edit-button, .confirm-button{
     background-color: cornflowerblue;
     color:white;
     margin-right: 15px;
 }
 
-.table-button-grp #edit-button:hover, #confirm-button:hover{
+.table-button-grp #edit-button:hover, .confirm-button:hover{
     background-color: royalblue;
 }
 
-.table-button-grp #delete-button, #cancel-button{
+.table-button-grp #delete-button, .cancel-button{
     background-color: salmon;
     color:white;
 }
 
-.table-button-grp #delete-button:hover, #cancel-button:hover{
+.table-button-grp #delete-button:hover, .cancel-button:hover{
     background-color: rgb(242, 78, 60);
 }
