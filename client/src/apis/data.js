@@ -15,12 +15,18 @@ function getRequiredDataAPI(params){
     })
 }
 
-function insertDataAPI(params){
+function insertDataAPI(data){
     return request({
         url:'/query',
         method:'PATCH',
-        params
-    })
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(data)
+    }).catch(error => {
+        console.error('Insert API error:', error);
+        throw error;
+    });
 }
 
 function updateDataAPI(data){

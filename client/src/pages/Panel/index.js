@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {useOptions} from '../../hooks/useOption';
-import {getAllDataAPI, getRequiredDataAPI, deleteDataAPI, updateDataAPI} from '../../apis/data';
+import {getAllDataAPI, getRequiredDataAPI, insertDataAPI, deleteDataAPI, updateDataAPI} from '../../apis/data';
 import './index.css';
 
 const Panel = ()=>{
@@ -17,6 +17,12 @@ const Panel = ()=>{
     const [displayCategory, setDisplayCategory] = useState(true);
     const [displayData, setDisplayData] = useState([]);
     const [displayInsert, setDisplayInsert] = useState(false);
+    const [newData, setNewData] = useState({
+        name: null,
+        theme: "",
+        subtheme: "",
+        category: ""
+    })
     const [loading, setLoading] = useState(true);
     const [count, setCount] = useState(0);
 
@@ -24,12 +30,43 @@ const Panel = ()=>{
         setDisplayInsert(true);
     }
 
-    const handleInsertSubmit = ()=>{
+    const handleInsertFormChange = (e)=>{
+        setNewData({
+            ...newData,
+            [e.target.name]: e.target.value
+        })
+    }
 
+    const handleInsertSubmit = async ()=>{
+        try{
+            setLoading(true);
+            await insertDataAPI(newData);
+            setNewData({
+                name: null,
+                theme: "",
+                subtheme: "",
+                category: ""
+            });
+            setReqData({ ...reqData });
+        }
+        catch(e){
+            console.error("Failed to insert data: ", e.message);
+            alert("Insert failed. Please try again.");
+        }
+        finally{
+            setLoading(false);
+            setDisplayInsert(false);
+        }
     }
 
     const handleCancelInsert = ()=>{
         setDisplayInsert(false);
+        setNewData({
+            name: null,
+            theme: "",
+            subtheme: "",
+            category: ""
+        })
     }
 
     const [editID, setEditID] = useState(null);
@@ -218,10 +255,38 @@ const Panel = ()=>{
         {displayInsert && <div className="insert-form">
             <div className="insert-head">Insert</div>
             <div className="insert-option">
-                <label>Name: <input type="text" name="name"></input></label>
-                <label>Theme: <input type="text" name="theme"></input></label>
-                <label>Subtheme: <input type="text" name="subtheme"></input></label>
-                <label>Category: <input type="text" name="category"></input></label>
+                <label>Name: <input 
+                    type="number" 
+                    name="name" 
+                    value={newData.name}
+                    maxLength="8"
+                    onChange={e=>handleInsertFormChange(e)} 
+                    required/>
+                </label>
+                <label>Theme: <input 
+                    type="text" 
+                    name="theme" 
+                    value={newData.theme}
+                    maxLength="8" 
+                    onChange={e=>handleInsertFormChange(e)}
+                    required/>
+                </label>
+                <label>Subtheme: <input 
+                    type="text" 
+                    name="subtheme" 
+                    value={newData.subtheme}
+                    maxLength="8" 
+                    onChange={e=>handleInsertFormChange(e)}
+                    required/>
+                </label>
+                <label>Category: <input 
+                    type="text" 
+                    name="category" 
+                    value={newData.category}
+                    maxLength="8" 
+                    onChange={e=>handleInsertFormChange(e)}
+                    required/>
+                </label>
             </div>
             <div className="button-grp">
                 <button className="confirm-button" onClick={handleInsertSubmit}>Confirm</button>
