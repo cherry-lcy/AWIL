@@ -1,13 +1,13 @@
 ## Frontend
-1. clone the project to local
+1. Clone the project to local
 
 git clone https://github.com/cherry-lcy/AWIL
 
-2. visit ./client
+2. Visit ./client
 
 cd client
 
-3. start the project
+3. Start the project
 
 npm start
 
@@ -18,7 +18,9 @@ The service will run at http://localhost:3000
 
 cd ./server
 
-2. Run the server
+2. Replace the username, password and the database in ./server/utils/db.js
+
+3. Run the server
 
 npm run dev
 
