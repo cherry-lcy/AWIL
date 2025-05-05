@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "./static/css/main.e498aae2.css",
+    "main.js": "./static/js/main.639e9a4e.js",
+    "static/media/ALLWALKS_logo_FullColor.png": "./static/media/ALLWALKS_logo_FullColor.0accc8027b6be8ae92b5.png",
+    "index.html": "./index.html",
+    "main.e498aae2.css.map": "./static/css/main.e498aae2.css.map",
+    "main.639e9a4e.js.map": "./static/js/main.639e9a4e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e498aae2.css",
+    "static/js/main.639e9a4e.js"
+  ]
+}
