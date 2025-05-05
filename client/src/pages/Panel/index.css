@@ -3,6 +3,7 @@
     height:100%;
     padding:30px 50px;
     box-sizing:border-box;
+    min-width: 480px;
 }
 
 .filter-form, .insert-form{

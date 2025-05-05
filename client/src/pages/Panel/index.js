@@ -12,9 +12,12 @@ const Panel = ()=>{
         category: ""
     });
 
-    const [displayTheme, setDisplayTheme] = useState(true);
-    const [displaySubtheme, setDisplaySubtheme] = useState(true);
-    const [displayCategory, setDisplayCategory] = useState(true);
+    const [display, setDisplay] = useState({
+        theme: true,
+        subtheme: true,
+        category: true
+    });
+    const [displayOperations, setDisplayOperations] = useState(true);
     const [displayData, setDisplayData] = useState([]);
     const [displayInsert, setDisplayInsert] = useState(false);
     const [newData, setNewData] = useState({
@@ -167,16 +170,16 @@ const Panel = ()=>{
         }
     }
 
-    const themeOnChange = (e)=>{
-        setDisplayTheme(e.target.checked);
-    }
-
-    const subthemeOnChange = (e)=>{
-        setDisplaySubtheme(e.target.checked);
-    }
-
-    const categoryOnChange = (e)=>{
-        setDisplayCategory(e.target.checked);
+    const displayOnChange = (e)=>{
+        const updatedDisplay = {
+            ...display,
+            [e.target.name]: e.target.checked
+        };
+        
+        setDisplay(updatedDisplay);
+        
+        const shouldShowOperations = Object.values(updatedDisplay).every(Boolean);
+        setDisplayOperations(shouldShowOperations);    
     }
 
     useEffect(()=>{
@@ -232,20 +235,20 @@ const Panel = ()=>{
             <label><input 
                 type="checkbox" 
                 name="theme" 
-                checked={displayTheme}
-                onChange={e=>themeOnChange(e)}
+                checked={display.theme}
+                onChange={e=>displayOnChange(e)}
                 />Theme</label>
             <label><input 
                 type="checkbox" 
                 name="subtheme" 
-                checked={displaySubtheme}
-                onChange={e=>subthemeOnChange(e)}
+                checked={display.subtheme}
+                onChange={e=>displayOnChange(e)}
                 />Subtheme</label>
             <label><input 
                 type="checkbox" 
                 name="category" 
-                checked={displayCategory}
-                onChange={e=>categoryOnChange(e)}
+                checked={display.category}
+                onChange={e=>displayOnChange(e)}
                 />Category</label>
         </form>
         <div className="result-container">
@@ -297,17 +300,17 @@ const Panel = ()=>{
             <thead>
                 <tr>
                     <th>Name</th>
-                    {displayTheme && <th>Theme</th>}
-                    {displaySubtheme && <th>Subtheme</th>}
-                    {displayCategory && <th>Category</th>}
-                    <th>Operation</th>
+                    {display.theme && <th>Theme</th>}
+                    {display.subtheme && <th>Subtheme</th>}
+                    {display.category && <th>Category</th>}
+                    {displayOperations && <th>Operations</th>}
                 </tr>
             </thead>
             <tbody>
                 {loading ? <tr><td colSpan="4">loading...</td></tr> : displayData.map((item, index)=>
                 <tr key={index}>
                     <td>{item.name}</td>
-                    {displayTheme && (<td>
+                    {display.theme && (<td>
                         {editID === item.id ? 
                         <input 
                             type="text" 
@@ -318,7 +321,7 @@ const Panel = ()=>{
                         ></input> 
                         : item.theme}
                     </td>)}
-                    {displaySubtheme && (<td>
+                    {display.subtheme && (<td>
                         {editID === item.id ? 
                         <input 
                             type="text" 
@@ -329,7 +332,7 @@ const Panel = ()=>{
                         ></input>
                          : item.subtheme}
                     </td>)}
-                    {displayCategory && (<td>{
+                    {display.category && (<td>{
                         editID === item.id ? <input
                             type="text"
                             name="category"
@@ -339,7 +342,7 @@ const Panel = ()=>{
                         ></input>
                          : item.category}
                     </td>)}
-                    <td>
+                    {displayOperations && (<td>
                         <div className="table-button-grp">
                             {editID === item.id ? <>
                                 <button className="confirm-button" value={item.name} onClick={()=>handleEditSubmit(item)}>Confirm</button>
@@ -349,7 +352,7 @@ const Panel = ()=>{
                                 <button id="delete-button" value={item.name} onClick={()=>handleDelete(item)}>Delete</button>
                             </>}
                         </div>
-                    </td>
+                    </td>)}
                 </tr>)}
             </tbody>
         </table>
